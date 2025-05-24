@@ -1,5 +1,6 @@
-import { Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { EmailService } from './email.service';
+import { SendEmailDto } from 'src/common/dto';
 
 /**
  * Controlador para el manejo de correos electrónicos
@@ -17,7 +18,7 @@ export class EmailController {
     ) {}
 
     @Post('send')
-    async sendEmail() {
-        return this.emailService.sendEmail();
+    async sendEmail(@Body() sendEmailDto: SendEmailDto) {
+        return this.emailService.sendEmail(sendEmailDto);
     }
 }
