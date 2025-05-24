@@ -35,6 +35,9 @@ export class EmailService {
                     delay: 5000,
                 },
             });
+            return {
+                message: 'Correo enviado correctamente',
+            }
         } catch (error) {
             throw new Error(`Hay un problema con el envío del correo: ${error.message}`)
         }

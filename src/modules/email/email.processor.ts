@@ -31,7 +31,49 @@ export class EmailProcessor {
     async handleSendEmail(job: Job<SendEmailDto>) {
         const { mailOptions, smtpConfig } = job.data;
 
-        let sanitizedHtml = sanitizeHtml(mailOptions.html,)
+        let sanitizedHtml = sanitizeHtml(mailOptions.html,{
+            allowedTags: sanitizeHtml.defaults.allowedTags.concat(['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'br', 'hr', 'div', 'span', 'img', 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'strong', 'em', 'b', 'i', 'u', 'a']),
+            allowedAttributes: {
+                '*': ['style', 'class', 'id'],
+                'a': ['href', 'target', 'rel'],
+                'img': ['src', 'alt', 'width', 'height'],
+                'table': ['width', 'border', 'cellpadding', 'cellspacing'],
+                'td': ['width', 'colspan', 'rowspan', 'align', 'valign'],
+                'th': ['width', 'colspan', 'rowspan', 'align', 'valign'],
+                'tr': ['align', 'valign'],
+                'p': ['align'],
+                'div': ['align'],
+                'span': ['style'],
+                'ul': ['type'],
+                'ol': ['type', 'start'],
+                'li': ['value']
+            },
+            allowedStyles: {
+                '*': {
+                    'color': [/^#(0x)?[0-9a-f]+$/i, /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/],
+                    'text-align': [/^left$/, /^right$/, /^center$/, /^justify$/],
+                    'font-size': [/^\d+(?:px|em|%)$/],
+                    'font-family': [/.*/],
+                    'font-weight': [/^\d+$/, /^normal$/, /^bold$/],
+                    'font-style': [/^normal$/, /^italic$/],
+                    'text-decoration': [/^none$/, /^underline$/],
+                    'background-color': [/^#(0x)?[0-9a-f]+$/i, /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/],
+                    'margin': [/^\d+(?:px|em|%)$/],
+                    'padding': [/^\d+(?:px|em|%)$/],
+                    'border': [/^\d+px\s+\w+\s+#[0-9a-f]+$/i],
+                    'border-radius': [/^\d+(?:px|em|%)$/],
+                    'width': [/^\d+(?:px|em|%)$/],
+                    'height': [/^\d+(?:px|em|%)$/],
+                    'display': [/^block$/, /^inline$/, /^inline-block$/],
+                    'vertical-align': [/^top$/, /^middle$/, /^bottom$/]
+                }
+            },
+            allowedClasses: {
+                '*': [/.*/] // Permitir todos los atributos de clase
+            },
+            allowedIframeHostnames: [], // Permitir todos los hostnames de iframe
+            disallowedTagsMode: 'discard', // Descartar etiquetas no permitidas
+        })
 
         const transporter = createTransporter(smtpConfig);
 

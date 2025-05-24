@@ -12,7 +12,7 @@ export class MailOptions {
 
     @IsString()
     @IsNotEmpty()
-    subjet: string
+    subject: string
     
     @IsString()
     @IsNotEmpty()
