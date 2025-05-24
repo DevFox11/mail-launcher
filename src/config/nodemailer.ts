@@ -2,17 +2,17 @@ import * as nodemailer from 'nodemailer';
 import { SmtpConfig } from 'src/common/dto';
 
 /**
- * Creates a nodemailer transport instance for sending emails
+ * Crea una instancia de transporte nodemailer para enviar correos electrónicos
  * 
- * @param smtpConfig - SMTP configuration object containing connection details
- * @param smtpConfig.host - SMTP server hostname
- * @param smtpConfig.port - SMTP server port number
- * @param smtpConfig.secure - Whether to use SSL/TLS (defaults to false)
- * @param smtpConfig.auth - Optional authentication credentials
- * @param smtpConfig.auth.user - SMTP username/email
- * @param smtpConfig.auth.pass - SMTP password
+ * @param smtpConfig - Objeto de configuración SMTP que contiene detalles de conexión
+ * @param smtpConfig.host - Nombre del servidor SMTP
+ * @param smtpConfig.port - Número de puerto del servidor SMTP
+ * @param smtpConfig.secure - Si se debe usar SSL/TLS (por defecto es false)
+ * @param smtpConfig.auth - Credenciales de autenticación opcionales
+ * @param smtpConfig.auth.user - Usuario/email SMTP
+ * @param smtpConfig.auth.pass - Contraseña SMTP
  * 
- * @returns Configured nodemailer transport instance
+ * @returns Instancia de transporte nodemailer configurada
  */
 
 export const createTransporter = (smtpConfig: SmtpConfig) => {

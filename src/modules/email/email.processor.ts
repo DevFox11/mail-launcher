@@ -6,19 +6,23 @@ import { SendEmailDto } from "src/common/dto";
 import { createTransporter } from "src/config/nodemailer";
 
 /**
- * Email processor class that handles email sending operations through a queue
+ * Clase procesadora de correos que maneja operaciones de envío a través de una cola de procesamiento
  * 
- * This processor uses Bull queue to handle email sending tasks asynchronously.
- * It processes jobs from the 'email.queue' queue and specifically handles
- * the 'send-email' job type.
+ * Este procesador implementa Bull Queue para gestionar el envío asíncrono de correos electrónicos.
+ * Se encarga de procesar las tareas en la cola 'email.queue', específicamente aquellas
+ * con el identificador 'send-email'.
  * 
- * The processor:
- * 1. Receives email data and SMTP configuration
- * 2. Sanitizes HTML content for security
- * 3. Creates a nodemailer transporter
- * 4. Sends the email using the configured transporter
+ * Flujo de procesamiento:
+ * 1. Recibe los datos del correo (destinatario, asunto, contenido) y la configuración SMTP
+ * 2. Aplica sanitización al contenido HTML para prevenir inyecciones maliciosas
+ * 3. Inicializa un transportador SMTP mediante nodemailer con la configuración proporcionada
+ * 4. Ejecuta el envío del correo electrónico a través del transportador
  * 
- * @throws {Error} If email sending fails
+ * Consideraciones de seguridad:
+ * - Sanitiza automáticamente el contenido HTML para prevenir XSS
+ * - Utiliza configuración SMTP segura para el envío
+ * 
+ * @throws {Error} Si ocurre un error durante el proceso de envío del correo electrónico
  */
 
 @Processor('email.queue')
@@ -37,7 +41,7 @@ export class EmailProcessor {
                 html: sanitizedHtml
             });
         } catch (error) {
-            throw new Error(`Error sending email: ${error.message}`);
+            throw new Error(`Error al enviar el correo electrónico: ${error.message}`);
         }
     }
 }
