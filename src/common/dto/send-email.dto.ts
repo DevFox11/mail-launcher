@@ -1,9 +1,12 @@
 import { Type } from "class-transformer";
-import { IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, Matches, MaxLength, ValidateNested } from "class-validator";
 
 export class MailOptions {
     @IsString()
     @IsNotEmpty()
+    @Matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, {
+        message: 'Formato de correo inválido'
+    })
     from: string;
 
     @IsEmail()
@@ -12,10 +15,12 @@ export class MailOptions {
 
     @IsString()
     @IsNotEmpty()
+    @MaxLength(150)
     subject: string
     
     @IsString()
     @IsNotEmpty()
+    @MaxLength(50000) // Límite razonable para notificaciones
     html: string
     
     @IsString()

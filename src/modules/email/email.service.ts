@@ -29,17 +29,20 @@ export class EmailService {
                 mailOptions,
                 smtpConfig,
             },{
-                attempts: 3,
+                priority: 1, // Alta prioridad para notificaciones
+                attempts: 5,
                 backoff: {
                     type: 'exponential',
-                    delay: 5000,
+                    delay: 2000, // Menor delay inicial
                 },
+                removeOnComplete: true, // Limpiar trabajos completados
+                timeout: 30000 // Timeout de 30 segundos
             });
             return {
-                message: 'Correo enviado correctamente',
+                message: 'Notificación enviada correctamente',
             }
         } catch (error) {
-            throw new Error(`Hay un problema con el envío del correo: ${error.message}`)
+            throw new Error(`Error en el envío de la notificación: ${error.message}`)
         }
     }
 }
